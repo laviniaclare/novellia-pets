@@ -1,4 +1,5 @@
 from app.data import PETS, ALLERGIES, VACCINES
+from models.vaccine_record import VaccineRecord
 
 
 class Pet:
@@ -33,5 +34,5 @@ class Pet:
         results = []
         for vaccine_id, info in VACCINES.items():
             if info.get("pet_id") == self.id:
-                results.append({"id": vaccine_id, **info})
+                results.append(VaccineRecord(vaccine_id, info["name"], info["pet_id"], info["date_administered"]))
         return results

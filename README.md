@@ -1,25 +1,22 @@
-# Minimal Flask skeleton
+# Novellia Pets
 
-This repository contains a minimal Flask skeleton app with a single home endpoint.
+This repository contains an extremely minimal proof of concept style implementation of Novellia Pets
 
-How to run (recommended: inside a virtualenv):
+## Getting started
 
-```bash
-# install deps
-pip install -r requirements.txt
+To run the app you can run either `make dev` or `make run`, depending on whether or not you want to run it in dev mode. You should then be able to access the app at http://127.0.0.1:5000/
 
-# run the app
-python run.py
+To run the tests run `make test`
 
-# or, using the app module directly
-python -m app
-```
+## Tech Stack
 
-The home endpoint is at: http://127.0.0.1:5000/
+I've chosen to use python with flask for this exercise. Why flask? The short, honest, answer is nostalgia. This was one of the first tech stacks I ever learned and it's been a while since I worked in it and I thought it might be fun to revisit it. Another reason is that python with flask is a nice simple framework that makes it pretty easy to get something basic up and running with minimal fuss. I also considered using nextjs for this because it is similarly great for getting something basic up and running quickly, but I was in a python mood
 
-Tests
+## Implementation Notes
 
-```bash
-pip install -r requirements.txt
-pytest -q
-```
+## What I would change if this was a production app
+
+- Django instead of Flask
+- React with typescript instead of templates
+
+## What I would like to do with more time
