@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Novellia Pets</title>
+  </head>
+  <body>
+    <main>
+      <h1>Welcome to Novellia Pets!</h1>
+      <p>Please select a user below</p>
+      <form method="post" action="{{ url_for('main.set_user') }}">
+        <label for="user-select" class="visually-hidden">Select user</label>
+        <select id="user-select" name="user">
+          <option value="">-- choose a user --</option>
+          {% for uid, u in users.items() %}
+          <option value="{{ uid }}" {% if current_user_id and uid == current_user_id %}selected{% endif %}>{{ u.name }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit">Select user</button>
+      </form>
+      {% if current_user_id %}
+      <p>Current user: {{ users[current_user_id].name }}</p>
+      {% endif %}
+    </main>
+  </body>
+</html>

@@ -12,9 +12,9 @@ class animalType(Enum):
     OTHER = "Other"
 
 PETS = {
-    1: {"name": "Fido", "type": animalType.DOG, "owner_name": "Alice", "dob": "2018-06-01" },
-    2: {"name": "Whiskers", "type": animalType.CAT, "owner_name": "Bob", "dob": "2019-09-15" },
-    3: {"name": "Tweety", "type": animalType.BIRD, "owner_name": "Carol", "dob": "2020-03-22" },
+    1: {"name": "Fido", "type": animalType.DOG, "owner_id": 1, "dob": "2018-06-01" },
+    2: {"name": "Whiskers", "type": animalType.CAT, "owner_id": 2, "dob": "2019-09-15" },
+    3: {"name": "Tweety", "type": animalType.BIRD, "owner_id": 3, "dob": "2020-03-22" },
 }
 
 VACCINES = {
@@ -25,3 +25,5 @@ VACCINES = {
 ALLERGIES = {
     1: {"pet_id": 1, "allergy_name": "Pollen", "reactions": "Sneezing", "severity": allergySeverity.MILD},
 }
+
+USERS = {1: {"name": "Alice"}, 2: {"name": "Bob"}, 3: {"name": "Carol"}}

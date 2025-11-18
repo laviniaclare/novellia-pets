@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Pet</title>
+  </head>
+  <body>
+    <main>
+      <header style="position: relative;">
+        <h1 style="margin: 0;">Add a Pet</h1>
+        <a href="{{ url_for('main.list_pets') }}" style="position: absolute; right: 0; top: 0; padding: 0.5rem; text-decoration: none;">My Pets</a>
+      </header>
+
+      {% if error %}
+      <p style="color: red">{{ error }}</p>
+      {% endif %}
+
+      <form method="post" action="{{ url_for('main.create_pet') }}">
+        <div>
+          <label for="name">Name</label>
+          <input id="name" name="name" required />
+        </div>
+
+        <div>
+          <label for="type">Type</label>
+          <select id="type" name="type">
+            <option value="">-- select type --</option>
+            {% for t in animalType %}
+            <option value="{{ t.name }}">{{ t.value }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
+          <label for="dob">Date of birth</label>
+          <input id="dob" name="dob" type="date" />
+        </div>
+
+        <div>
+          <button type="submit">Create pet</button>
+        </div>
+      </form>
+
+    </main>
+  </body>
+</html>

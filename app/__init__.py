@@ -13,6 +13,9 @@ def create_app(config: dict | None = None) -> Flask:
     if config:
         app.config.update(config)
 
+    # default current user id (can be updated through a POST form)
+    app.config.setdefault("CURRENT_USER_ID", None)
+
     # register routes defined in app/routes.py
     app.register_blueprint(main_bp)
 

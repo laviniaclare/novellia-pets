@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Pets</title>
+</head>
+
+<body>
+    <main>
+        <header style="position: relative;">
+            <h1 style="margin: 0;">My Pets</h1>
+            <p><a href="{{ url_for('main.create_pet') }}">Add Pet</a></p>
+            <a href="{{ url_for('main.home') }}" style="position: absolute; right: 0; top: 0; padding: 0.5rem; text-decoration: none;">Back to Landing Page</a>
+        </header>
+        {% if pets %}
+        <ul>
+                    {% for pet in pets %}
+                    <li>
+                        <a href="{{ url_for('main.show_pet_profile', pet_id=pet.id) }}">{{ pet.name }}</a>
+                        <form method="post" action="{{ url_for('main.delete_pet', pet_id=pet.id) }}" style="display:inline" onsubmit="return confirm('Are you sure you want to delete this pet?');">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </li>
+                    {% endfor %}
+        </ul>
+    {% else %}
+    <p>You don't have any pets in our system! Please <a href="{{ url_for('main.create_pet') }}">add a pet</a>.</p>
+    {% endif %}
+    </main>
+</body>
+</html>
