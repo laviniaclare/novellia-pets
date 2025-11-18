@@ -19,6 +19,6 @@ class AllergyRecord:
 
         allergy_record = ALLERGIES.get(allergy_record_id)
         if allergy_record:
-            return AllergyRecord(allergy_record_id, allergy_record["name"], allergy_record["pet_id"], allergy_record["reactions"], allergy_record["severity"])
+            return AllergyRecord(allergy_record_id, allergy_record["allergy_name"], allergy_record["pet_id"], allergy_record["reactions"], allergy_record["severity"])
         return None
 

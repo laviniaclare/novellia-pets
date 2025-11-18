@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if vaccine %}Edit{% else %}Add{% endif %} vaccine record for {{ pet.name }}{% endblock %}
+
+{% block content %}
+<header style="position: relative;">
+    <h1 style="margin: 0;">{% if vaccine %}Edit{% else %}Add{% endif %} Vaccine Record</h1>
+    <a href="{{ url_for('main.show_pet_profile', pet_id=pet.id) }}"
+        style="position: absolute; right: 0; top: 0; padding: 0.5rem; text-decoration: none;">{{ pet.name }}</a>
+</header>
+
+{% if error %}
+<p style="color: red">{{ error }}</p>
+{% endif %}
+
+<form method="post" action="{% if vaccine %}{{ url_for('main.edit_vaccine_record', pet_id=pet.id, vaccine_id=vaccine.id) }}{% else %}{{ url_for('main.create_vaccine_record', pet_id=pet.id) }}{% endif %}">
+    <div>
+        <label for="name">Name</label>
+        <input id="name" name="name" value="{{ vaccine.name if vaccine else '' }}" required />
+    </div>
+    <div>
+        <label for="date_administered">Date administered</label>
+        <input id="date_administered" name="date_administered" type="date" value="{{ vaccine.date_administered if vaccine else '' }}" />
+    </div>
+
+    <div style="margin-top:1rem;">
+        <button type="submit">{% if vaccine %}Save{% else %}Add{% endif %}</button>
+        <a href="{{ url_for('main.show_pet_profile', pet_id=pet.id) }}"><button type="button">Cancel</button></a>
+    </div>
+</form>
+{% endblock %}

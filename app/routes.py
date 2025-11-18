@@ -4,6 +4,7 @@ from .data import PETS, VACCINES, ALLERGIES, USERS, animalType, allergySeverity
 from models.user import User
 from models.pet import Pet
 from models.vaccine_record import VaccineRecord
+from models.allergy_record import AllergyRecord
 
 bp = Blueprint("main", __name__)
 
@@ -194,10 +195,10 @@ def create_vaccine_record(pet_id: int):
 
         return redirect(url_for("main.show_pet_profile", pet_id=pet_id))
 
-    # GET -> render form with the pet so template can reference pet.name and pet.id
     return render_template(
-        "create_vaccine_record_form.html",
+        "vaccine_record_form.html",
         pet=pet,
+        vaccine=None,
         current_user_id=current_app.config.get("CURRENT_USER_ID"),
     )
 
@@ -234,7 +235,6 @@ def create_allergy_record(pet_id: int):
 
         return redirect(url_for("main.show_pet_profile", pet_id=pet_id))
 
-    # GET -> render form with the pet and enum
     return render_template("create_allergy_record_form.html", pet=pet, allergySeverity=allergySeverity)
 
 
@@ -267,8 +267,40 @@ def edit_vaccine_record(pet_id: int, vaccine_id: int):
             VACCINES[vaccine_id]["date_administered"] = date_administered
         return redirect(url_for("main.show_pet_profile", pet_id=pet_id))
 
-    # GET -> render edit form
-    return render_template("edit_vaccine_record_form.html", pet=pet, vaccine=vaccine_record)
+    return render_template("vaccine_record_form.html", pet=pet, vaccine=vaccine_record)
+
+
+@bp.route("/pets/<int:pet_id>/edit_allergy_record/<int:allergy_id>", methods=["GET", "POST"])
+def edit_allergy_record(pet_id: int, allergy_id: int):
+    """
+    Edit an existing allergy record for a pet.
+    """
+
+    pet = Pet.get_pet_by_id(pet_id)
+    if not pet:
+        abort(404)
+
+    current_user_id = current_app.config.get("CURRENT_USER_ID")
+    if current_user_id is None or int(pet.owner_id) != int(current_user_id):
+        abort(403)
+
+    allergy_record = AllergyRecord.get_allergy_record_by_id(allergy_id)
+    if not allergy_record:
+        abort(404)
+
+    if request.method == "POST":
+        allergy_name = request.form.get("allergy_name", "").strip()
+        reactions = request.form.get("reactions", "").strip()
+        severity_name = request.form.get("severity", "").strip()
+
+        if allergy_id in ALLERGIES:
+            ALLERGIES[allergy_id]["allergy_name"] = allergy_name
+            ALLERGIES[allergy_id]["reactions"] = reactions
+            ALLERGIES[allergy_id]["severity"] = allergySeverity[severity_name]
+        return redirect(url_for("main.show_pet_profile", pet_id=pet_id))
+
+    return render_template("allergy_record_form.html", pet=pet, allergy=allergy_record, allergySeverity=allergySeverity)
+
 
 @bp.route("/pets/<int:pet_id>/delete_vaccine_record/<int:vaccine_id>", methods=["POST"])
 def delete_vaccine_record(pet_id: int, vaccine_id: int):
@@ -286,5 +318,24 @@ def delete_vaccine_record(pet_id: int, vaccine_id: int):
 
     # remove the vaccine record from the in-memory store - in the real world we would use a database
     VACCINES.pop(vaccine_id, None)
+
+    return redirect(url_for("main.show_pet_profile", pet_id=pet_id))
+
+@bp.route("/pets/<int:pet_id>/delete_allergy_record/<int:allergy_id>", methods=["POST"])
+def delete_allergy_record(pet_id: int, allergy_id: int):
+    """
+    Delete a allergy record by id 
+    """
+    pet = Pet.get_pet_by_id(pet_id)
+    if not pet:
+        abort(404)
+
+    current_user_id = current_app.config.get("CURRENT_USER_ID")
+    # simple ownership check
+    if current_user_id is None or int(pet.owner_id) != int(current_user_id):
+        abort(403)
+
+    # remove the allergy record from the in-memory store - in the real world we would use a database
+    ALLERGIES.pop(allergy_id, None)
 
     return redirect(url_for("main.show_pet_profile", pet_id=pet_id))
