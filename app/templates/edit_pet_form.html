@@ -1,46 +1,34 @@
-<!doctype html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Edit {{ pet.name }}</title>
-    <style>
-        label { display:block; margin-top:0.5rem; }
-    </style>
-</head>
+{% block title %}Edit {{ pet.name }}{% endblock %}
 
-<body>
-    <main>
-        <header>
-            <h1>Edit {{ pet.name }}</h1>
-            <a href="{{ url_for('main.show_pet_profile', pet_id=pet.id) }}" style="float: right;">&lt; Back</a>
-        </header>
+{% block content %}
+    <header>
+        <h1>Edit {{ pet.name }}</h1>
+        <a href="{{ url_for('main.show_pet_profile', pet_id=pet.id) }}" style="float: right;">&lt; Back</a>
+    </header>
 
-        {% if error %}
-            <p style="color: red">{{ error }}</p>
-        {% endif %}
+    {% if error %}
+        <p style="color: red">{{ error }}</p>
+    {% endif %}
 
-        <form method="post" action="{{ url_for('main.update_pet', pet_id=pet.id) }}">
-            <label for="name">Name</label>
-            <input id="name" name="name" type="text" value="{{ pet.name }}" required>
+    <form method="post" action="{{ url_for('main.update_pet', pet_id=pet.id) }}">
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text" value="{{ pet.name }}" required>
 
-            <label for="type">Type</label>
-            <select id="type" name="type">
-                {% for member in animalType %}
-                    <option value="{{ member.name }}" {% if pet.type and member == pet.type %}selected{% endif %}>{{ member.value }}</option>
-                {% endfor %}
-            </select>
+        <label for="type">Type</label>
+        <select id="type" name="type">
+            {% for member in animalType %}
+                <option value="{{ member.name }}" {% if pet.type and member == pet.type %}selected{% endif %}>{{ member.value }}</option>
+            {% endfor %}
+        </select>
 
-            <label for="dob">Date of Birth</label>
-            <input id="dob" name="dob" type="date" value="{{ pet.dob }}">
+        <label for="dob">Date of Birth</label>
+        <input id="dob" name="dob" type="date" value="{{ pet.dob }}">
 
-            <div style="margin-top: 1rem;">
-                <button type="submit">Save</button>
-                <a href="{{ url_for('main.show_pet_profile', pet_id=pet.id) }}"><button type="button">Cancel</button></a>
-            </div>
-        </form>
-    </main>
-</body>
-
-</html>
+        <div style="margin-top: 1rem;">
+            <button type="submit">Save</button>
+            <a href="{{ url_for('main.show_pet_profile', pet_id=pet.id) }}"><button type="button">Cancel</button></a>
+        </div>
+    </form>
+{% endblock %}

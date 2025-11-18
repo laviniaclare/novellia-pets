@@ -18,7 +18,8 @@ def home():
 
 @bp.route("/select-user", methods=["POST"])
 def set_user():
-    """Set the global current user id (stored in app.config) from the form.
+    """
+    Set the global current user id (stored in app.config) from the form.
 
     The form sends a field named `user`. If empty, current user is set to None.
     """
@@ -91,17 +92,14 @@ def update_pet(pet_id: int):
         if not name:
             return render_template("edit_pet_form.html", pet=pet, animalType=animalType, error="Name is required")
 
-        # update the in-memory PETS mapping
         pet_dict = PETS.get(pet_id)
         if pet_dict is None:
             abort(404)
 
         pet_dict["name"] = name
-        try:
-            pet_dict["type"] = animalType[type_name]
-        except Exception:
-            # invalid type name -> leave unchanged
-            pass
+        # Since users are selecting from a drop down they can only select valid types
+        # so we don't need to validate, but we could make it more robust by doing so
+        pet_dict["type"] = animalType[type_name]
         pet_dict["dob"] = dob
 
         return redirect(url_for("main.show_pet_profile", pet_id=pet_id))
@@ -147,9 +145,8 @@ def create_pet():
 
 @bp.route("/pets/<int:pet_id>/delete", methods=["POST"])
 def delete_pet(pet_id: int):
-    """Delete a pet by id (only if it exists and belongs to the current user).
-
-    Uses the in-memory PETS mapping.
+    """
+    Delete a pet by id
     """
     pet = Pet.get_pet_by_id(pet_id)
     if not pet:
@@ -160,7 +157,7 @@ def delete_pet(pet_id: int):
     if current_user_id is None or int(pet.owner_id) != int(current_user_id):
         abort(403)
 
-    # remove the pet from the in-memory store
+    # remove the pet from the in-memory store - in the real world we would use a database
     PETS.pop(pet_id, None)
 
     return redirect(url_for("main.list_pets"))
