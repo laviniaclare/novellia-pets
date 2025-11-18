@@ -27,6 +27,9 @@
     {% endif %}
 
     <p>Vaccines:</p>
+    <a href="{{ url_for('main.create_vaccine_record', pet_id=pet.id) }}" style="display:inline">
+        <button type="button">Add Vaccine Record</button>
+    </a>
     {% if vaccines %}
         <ul>
             {% for vaccine in vaccines %}

@@ -24,8 +24,11 @@ def test_set_current_user():
     assert resp.status_code == 200
     # app config should be updated
     assert app.config["CURRENT_USER_ID"] == 2
-    # the pets page should show at least one pet for Bob (Whiskers)
-    assert b"Whiskers" in resp.data
+    # the pets page should show at least one pet for Bob (check PETS data)
+    from app.data import PETS
+    # find a pet owned by user 2 and ensure its name appears on the page
+    pet_names = [info.get("name") for pid, info in PETS.items() if info.get("owner_id") == 2]
+    assert any(name.encode() in resp.data for name in pet_names)
 
 
 def test_delete_pet():

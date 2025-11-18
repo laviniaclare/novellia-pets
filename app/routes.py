@@ -34,6 +34,7 @@ def set_user():
 
     return redirect(url_for("main.list_pets"))
 
+
 @bp.route("/pets", methods=["GET"])
 def list_pets():
     current_user_id = current_app.config.get("CURRENT_USER_ID")
@@ -52,6 +53,7 @@ def list_pets():
         pets=pets,
     )
 
+
 @bp.route("/pets/<int:pet_id>")
 def show_pet_profile(pet_id):
     pet = Pet.get_pet_by_id(pet_id)
@@ -67,6 +69,7 @@ def show_pet_profile(pet_id):
         allergies=allergies,
         vaccines=vaccines,
     )
+
 
 @bp.route("/pets/<int:pet_id>/update", methods=["GET", "POST"])
 def update_pet(pet_id: int):
@@ -108,7 +111,6 @@ def update_pet(pet_id: int):
     return render_template("edit_pet_form.html", pet=pet, animalType=animalType)
     
 
-
 @bp.route("/pets/create", methods=["GET", "POST"])
 def create_pet():
     """
@@ -142,7 +144,6 @@ def create_pet():
     return render_template("create_pet_form.html", animalType=animalType, current_user_id=current_app.config.get("CURRENT_USER_ID"))
 
 
-
 @bp.route("/pets/<int:pet_id>/delete", methods=["POST"])
 def delete_pet(pet_id: int):
     """
@@ -161,5 +162,43 @@ def delete_pet(pet_id: int):
     PETS.pop(pet_id, None)
 
     return redirect(url_for("main.list_pets"))
+
+
+@bp.route("/pets/<int:pet_id>/create_vaccine_record", methods=["GET", "POST"])
+def create_vaccine_record(pet_id: int):
+    """
+    Add a new vaccine record to a pet
+
+    GET: render form
+    POST: Create a new vaccine record assigned to the given pet
+    """
+    current_user_id = current_app.config.get("CURRENT_USER_ID")
+    if not current_user_id:
+        return redirect(url_for("main.home"))
+
+    # ensure the pet exists and the current user owns it
+    pet = Pet.get_pet_by_id(pet_id)
+    if not pet:
+        abort(404)
+
+    if int(pet.owner_id) != int(current_user_id):
+        abort(403)
+
+    if request.method == "POST":
+        name = request.form.get("name", "").strip()
+        date_administered = request.form.get("date_administered", "").strip()
+        new_pet_vaccine_record_id = max(VACCINES.keys(), default=0) + 1
+
+        VACCINES[new_pet_vaccine_record_id] = {"name": name, "date_administered": date_administered, "pet_id": pet_id}
+
+        return redirect(url_for("main.show_pet_profile", pet_id=pet_id))
+
+    # GET -> render form with the pet so template can reference pet.name and pet.id
+    return render_template(
+        "create_vaccine_record_form.html",
+        pet=pet,
+        current_user_id=current_app.config.get("CURRENT_USER_ID"),
+    )
+
     
 
