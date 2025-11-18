@@ -20,7 +20,7 @@
 
     <div>
       <label for="type">Type</label>
-      <select id="type" name="type">
+      <select id="type" name="type" required >
         <option value="">-- select type --</option>
         {% for t in animalType %}
           <option value="{{ t.name }}">{{ t.value }}</option>
@@ -30,7 +30,7 @@
 
     <div>
       <label for="dob">Date of birth</label>
-      <input id="dob" name="dob" type="date" />
+      <input id="dob" name="dob" type="date" required />
     </div>
 
     <div>

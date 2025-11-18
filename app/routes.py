@@ -202,6 +202,42 @@ def create_vaccine_record(pet_id: int):
     )
 
 
+@bp.route("/pets/<int:pet_id>/create_allergy_record", methods=["GET", "POST"])
+def create_allergy_record(pet_id: int):
+    """
+    Create a new allergy record for a pet
+
+    GET: render the form
+    POST: Create a new allergy record assigned to the given pet
+    """
+    current_user_id = current_app.config.get("CURRENT_USER_ID")
+    if not current_user_id:
+        return redirect(url_for("main.home"))
+
+    # ensure the pet exists and the current user owns it
+    pet = Pet.get_pet_by_id(pet_id)
+    if not pet:
+        abort(404)
+
+    if int(pet.owner_id) != int(current_user_id):
+        abort(403)
+
+    if request.method == "POST":
+        allergy_name = request.form.get("allergy_name", "").strip()
+        reactions = request.form.get("reactions", "").strip()
+        severity_name = request.form.get("severity", "").strip()
+
+        new_allergy_id = max(ALLERGIES.keys(), default=0) + 1
+        severity = allergySeverity[severity_name]
+
+        ALLERGIES[new_allergy_id] = {"pet_id": pet_id, "allergy_name": allergy_name, "reactions": reactions, "severity": severity}
+
+        return redirect(url_for("main.show_pet_profile", pet_id=pet_id))
+
+    # GET -> render form with the pet and enum
+    return render_template("create_allergy_record_form.html", pet=pet, allergySeverity=allergySeverity)
+
+
 @bp.route("/pets/<int:pet_id>/edit_vaccine_record/<int:vaccine_id>", methods=["GET", "POST"])
 def edit_vaccine_record(pet_id: int, vaccine_id: int):
     """

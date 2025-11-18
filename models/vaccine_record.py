@@ -1,8 +1,8 @@
-from app.data import PETS, ALLERGIES, VACCINES
+from app.data import VACCINES
 
 
 class VaccineRecord:
-    def __init__(self, id: int, name, pet_id, date_administered):
+    def __init__(self, id: int, name: str, pet_id: int, date_administered: str):
         self.id = id
         self.name = name
         self.pet_id = pet_id

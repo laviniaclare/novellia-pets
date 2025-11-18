@@ -16,10 +16,15 @@
     <p>DOB: {{ pet.dob }}</p>
 
     <p>Allergies:</p>
+    <a href="{{ url_for('main.create_allergy_record', pet_id=pet.id) }}" style="display:inline">
+        <button type="button">Add Allergy Record</button>
+    </a>
     {% if allergies %}
         <ul>
             {% for allergy in allergies %}
-                <li>Name: {{ allergy["allergy_name"] }}, Severity: {{ allergy["severity"].value if allergy["severity"] else allergy["severity"] }}, Reactions: {{ allergy["reactions"] }}</li>
+                <li>
+                    <span>Name: {{ allergy.allergy_name }}, Severity: {{ allergy.severity.value if allergy.severity else allergy.severity }}, Reactions: {{ allergy.reactions }}</span>
+                </li>
             {% endfor %}
         </ul>
     {% else %}

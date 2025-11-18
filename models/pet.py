@@ -1,9 +1,10 @@
 from app.data import PETS, ALLERGIES, VACCINES
 from models.vaccine_record import VaccineRecord
+from models.allergy_record import AllergyRecord
 
 
 class Pet:
-    def __init__(self, id: int, name, type, owner_id, dob):
+    def __init__(self, id: int, name: str, type: str, owner_id: int, dob: str):
         self.id = id
         self.name = name
         self.type = type
@@ -27,7 +28,7 @@ class Pet:
         results = []
         for allergy_id, info in ALLERGIES.items():
             if info.get("pet_id") == self.id:
-                results.append({"id": allergy_id, **info})
+                results.append(AllergyRecord(allergy_id, info.get("allergy_name"), info.get("pet_id"), info.get("reactions"), info.get("severity")))
         return results
 
     def get_vaccines(self):

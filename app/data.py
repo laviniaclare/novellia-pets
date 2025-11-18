@@ -29,4 +29,4 @@ ALLERGIES = {
     2: {"pet_id": 1, "allergy_name": "Chocolate", "reactions": "Itching, Vomiting", "severity": allergySeverity.SEVERE},
 }
 
-USERS = {1: {"name": "Alice"}, 2: {"name": "Bob"}, 3: {"name": "Carol"}}
+USERS = {1: {"name": "Alice"}, 2: {"name": "Bob"}, 3: {"name": "Carol"}, 4: {"name": "Zac"}}
