@@ -78,7 +78,7 @@ class Pet:
             pet_counts_by_type[pet_type] = pet_counts_by_type.get(pet_type, 0) + 1
         
         for type in animalType:
-            if not type in pet_counts_by_type:
+            if not type.value in pet_counts_by_type:
                 pet_counts_by_type[type.value] = 0
         
         return pet_counts_by_type
