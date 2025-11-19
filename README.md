@@ -8,7 +8,7 @@ To run the app you can run either `make dev` or `make run`, depending on whether
 
 To run the tests run `make test`
 
-To see the regular customer view select any of the names from. See the admin view select the "Admin" user from the same dropdown.
+To see the regular customer view select any of the names from the dropdown on the landing page. See the admin view select the "Admin" user from the same dropdown.
 
 ## Implementation Notes
 
@@ -18,7 +18,7 @@ I've chosen to use python with flask for this exercise. Why flask? The short, ho
 
 ### Login
 
-For the purposes of this exercise I have implemented a drop-down with a list of users that you can select to see how these users would see the app. In a production system we would obviously want real oath but I figured this was a simple way to make it easy to poke around as different personas.
+For the purposes of this exercise I have implemented a drop-down with a list of hard-coded users that you can select to see how these users would see the app. In a production system we would obviously want real oath but I figured this was a simple way to make it easy to poke around as different personas.
 
 ### Data store
 
@@ -30,14 +30,15 @@ I opted to use an in-memory data store with some hard-coded data. Generally, the
 - React with typescript instead of templates -- honestly, I would probably just do this from the start if I was to do this over again. As much fun as it was to get back to basics with html, I did miss a lot of reacts features, especially when implementing the admin dashboard.
 - Use an actual database (I'm partial to postgres)
 - Add a little more security around pet profiles and such. Only the owner or an admin should be able to view a pet's profile.
+- Nicer error messages. Right now we just raise 404's and 403's but it would be nicer to have a custom error message that's more informative and a little more user friendly
 
 ## What I would like to do with more time
 
 - A lot of the styling, especially spacing, is pretty wonky. I would love to spend more time making it actually pretty to look at
 - Use a real database!!
-- There's quite a lot of code cleanup that could be done here. The create and edit pet forms should be combined into one, the models should have CRUD functions that the api layer calls, there's some inconsistencies in function structure that i'd like to fix, etc.
+- There's quite a lot of code cleanup that could be done here. The create and edit pet forms should be combined into one, the models should have CRUD functions that the api layer calls, there's some inconsistencies in function structure that I'd like to fix, etc.
 - More robust error handling with nicer error messages
-- Success banners on successful changes
+- Success banners on successful changes/saves
 - Some actually pretty charts and graphs on the dashboard. I love making charts and graphs so I'm sad I didn't end up having time to really display that, but I prioritized hitting as many of the requirements as possible over making one feature really nice.
 - More tests! I love writing tests and thinking through edge cases, but I simply ran out of time
 
