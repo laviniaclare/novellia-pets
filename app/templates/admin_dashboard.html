@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Novellia Pets{% endblock %}
+
+{% block content %}
+  <h1>Admin Dashboard</h1>
+  <p>Total pets: {{ total_pets_count }}</p>
+  <h2>Pet Counts by Type</h2>
+  <ul>
+    {% for pet_type, count in pet_counts_by_type.items() %}
+      <li>{{ pet_type }}: {{ count }}</li>
+    {% endfor %}
+  </ul>
+  <h2>Search pets by name</h2>
+  <form method="GET" action="{{ url_for('main.search_pets_by_name') }}">
+    <input type="text" name="query" placeholder="Enter pet name">
+    <button type="submit">Search</button>
+  </form>
+
+  <h2>Search pets by type</h2>
+  <form method="GET" action="{{ url_for('main.search_pets_by_type') }}">
+    <input type="text" name="query" placeholder="Enter pet type">
+    <button type="submit">Search</button>
+  </form>
+
+{% endblock %}

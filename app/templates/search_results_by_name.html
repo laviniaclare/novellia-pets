@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+  <h1>Search Results for "{{ query }}"</h1>
+
+  {% if pets %}
+    <ul>
+      {% for pet in pets %}
+        <li>
+          <a href="{{ url_for('main.show_pet_profile', pet_id=pet.id) }}">{{ pet.name }}</a>
+          - {{ pet.type }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No pets found with that name.</p>
+  {% endif %}
+
+  <p><a href="{{ url_for('main.admin_dashboard') }}">Back to Admin Dashboard</a></p>
+{% endblock %}

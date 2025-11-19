@@ -8,6 +8,8 @@ To run the app you can run either `make dev` or `make run`, depending on whether
 
 To run the tests run `make test`
 
+To see the regular customer view select any of the names from. See the admin view select the "Admin" user from the same dropdown.
+
 ## Implementation Notes
 
 ### Tech Stack
@@ -21,8 +23,9 @@ I've chosen to use python with flask for this exercise. Why flask? The short, ho
 ## What I would change if this was a production app
 
 - Django instead of Flask
-- React with typescript instead of templates
+- React with typescript instead of templates -- honestly, I would probably just do this from the start if I was to do this over again. As much fun as it was to get back to basics with html, I did miss a lot of reacts features, especially when implementing the admin dashboard.
 - Use an actual database (I'm partial to postgres)
+- Add a little more security around pet profiles and such. Only the owner or an admin should be able to view a pet's profile.
 
 ## What I would like to do with more time
 

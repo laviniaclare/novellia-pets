@@ -33,20 +33,69 @@ def set_user():
             current_app.config["CURRENT_USER_ID"] = None
     else:
         current_app.config["CURRENT_USER_ID"] = None
+    
+    # look up the user for the id we just set; guard if lookup fails
+    current_user = User.get_current_user()
+    if current_user and getattr(current_user, "permission", None) == "admin":
+        return redirect(url_for("main.admin_dashboard"))
 
     return redirect(url_for("main.list_pets"))
 
+@bp.route("/admin", methods=["GET"])
+def admin_dashboard():
+    user = User.get_current_user()
+
+    if not user or user.permission != "admin":
+        return redirect(url_for("main.home" ))
+    
+    total_pets = len(PETS)
+    pet_counts_by_type = Pet.get_pet_counts_by_type()
+    
+    return render_template(
+        "admin_dashboard.html",
+        total_pets_count=total_pets,
+        pet_counts_by_type=pet_counts_by_type,
+        current_user=user,
+    )
+
+@bp.route("/admin/search_pets_by_name", methods=["GET"])
+def search_pets_by_name():
+    query = request.args.get("query", "").strip()
+    current_user = User.get_current_user()
+    if not current_user or current_user.permission != "admin":
+        return redirect(url_for("main.home"))
+
+    if not query:
+        # nothing to search for — redirect back to admin dashboard
+        return redirect(url_for("main.admin_dashboard"))
+
+    matches = Pet.get_pets_by_name(query)
+    return render_template("search_results_by_name.html", pets=matches, query=query)
+
+@bp.route("/admin/search_pets_by_type", methods=["GET"])
+def search_pets_by_type():
+    query = request.args.get("query", "").strip()
+    current_user = User.get_current_user()
+    if not current_user or current_user.permission != "admin":
+        return redirect(url_for("main.home"))
+
+    if not query:
+        # nothing to search for — redirect back to admin dashboard
+        return redirect(url_for("main.admin_dashboard"))
+
+    matches = Pet.get_pets_by_type(query)
+
+    return render_template("search_results_by_type.html", pets=matches, query=query)
 
 @bp.route("/pets", methods=["GET"])
 def list_pets():
-    current_user_id = current_app.config.get("CURRENT_USER_ID")
+    current_user = User.get_current_user()
     # TODO: It would be nice to add a toast or something if the user is redirected to home
-    if not current_user_id:
+    if not current_user:
         return redirect(url_for("main.home"))
     else:
-        user = User.get_current_user(current_user_id)
-        if user:
-            pets = user.get_pets()
+        if current_user:
+            pets = current_user.get_pets()
         else:
             return redirect(url_for("main.home"))
 

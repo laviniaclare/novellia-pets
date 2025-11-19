@@ -1,10 +1,12 @@
 from app.data import USERS, PETS
+from flask import current_app
 
 
 class User:
-    def __init__(self, id: int, name: str):
+    def __init__(self, id: int, name: str, permission: str):
         self.id = id
         self.name = name
+        self.permission = permission
 
     def get_pets(self):
         pets = []
@@ -15,11 +17,19 @@ class User:
         return pets
 
     @staticmethod
-    def get_current_user(current_user_id: int):
+    def get_current_user():
+        current_user_id = current_app.config.get("CURRENT_USER_ID")
         if current_user_id is None:
             return None
 
-        entry = USERS.get(int(current_user_id))
-        if not entry:
+        try:
+            user_id = int(current_user_id)
+        except (TypeError, ValueError):
             return None
-        return User(int(current_user_id), entry.get("name"))
+
+        current_user = USERS.get(user_id)
+        if not current_user:
+            return None
+
+        permission = current_user.get("permission", None)
+        return User(user_id, current_user.get("name"), permission)
