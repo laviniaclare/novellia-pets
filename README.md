@@ -38,7 +38,7 @@ I opted to use an in-memory data store with some hard-coded data. Generally, the
 - There's quite a lot of code cleanup that could be done here. The create and edit pet forms should be combined into one, the models should have CRUD functions that the api layer calls, there's some inconsistencies in function structure that i'd like to fix, etc.
 - More robust error handling with nicer error messages
 - Success banners on successful changes
-- Some actually pretty charts and graphs on the dashboard. i love making charts and graphs so I'm sad I didn't end up having time to really display that, but I prioritized hitting as many of the requirements as possible over making one feature really nice.
+- Some actually pretty charts and graphs on the dashboard. I love making charts and graphs so I'm sad I didn't end up having time to really display that, but I prioritized hitting as many of the requirements as possible over making one feature really nice.
 - More tests! I love writing tests and thinking through edge cases, but I simply ran out of time
 
 # Closing Thoughts
